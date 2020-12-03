@@ -17,7 +17,7 @@ int main()
 
     for (int i = 0; i < etapa; i++)
     {
-        printf("\n %i Â° Etapa:\n", etapa);
+        printf("\n %i ° Etapa:\n", etapa);
         for(int j = 0; j < 5; j++)
         {
 
