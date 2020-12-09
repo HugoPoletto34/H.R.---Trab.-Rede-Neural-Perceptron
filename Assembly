@@ -1,0 +1,89 @@
+.data
+vet:
+.space 600
+.text
+Main:	
+        Lw $s0, ($zero)
+        Lw $s1, ($zero)
+        Lw $s2, ($zero)
+        Lw $s3, ($zero)
+        Lw $s4, ($zero)
+        Lw $s5, ($zero)
+        Lw $s6, ($zero)
+        add $s0, ($zero), 50
+        Muli $t0, $s0, 3
+        sw $s1, vet[]           // nao sei qual a posição 
+        Add $s2, ($zero), ($zero)
+        Add $s3, ($zero), 0.8
+        Add $s4, ($zero), 0.0001
+        Add $s5, ($zero), ($zero)
+        add $s6, ($zero), ($zero)
+
+    for: 
+            slt $t0, $s6, $s1
+            beq $t0, ($zero), FimFOR
+            addi $t1, $s5, 1    //cont + 1
+            addi $t2, $s6, 4    //i + 1
+            addi $t3, $s6, 8    //i + 2
+            sw $t1, vet[$s6]    
+            sw $t1, vet[$t2]
+            lw $t4, vet[$s6] 
+            lw $t5, vet[$t2]  
+            add $t6, $t4, $t5 
+            sw $t6, vet[$t3] 
+            add $s5, $s5, 1 
+            addi $s6, $s6, 12 //i += 3 (nao sei se tinha que ser 3 ou 3 * 4 ja que 1 = 4 byts)
+    FimFOR: j for 
+
+        Lw $s7, ($zero)
+        add $s6, ($zero), ($zero) //i=0
+        add $t0, ($zero), ($zero) //variavel que vai mudar com o slt
+
+    For:    slt $t0, $s6, $s1
+            beq $t0, ($zero), FimFOR
+            
+            //calcular o erro
+
+            add $t2, $s6, 4      //atribuindo novamente o valor i + 1 a essa variavel
+            add $t3, $s6, 8      //atribuindo novamente o valor i + 2 a essa variavel
+            lw $t4, vet[$s6]     //atribuindo novamente o vetor [i] a essa variavel 
+            lw $t5, vet[$t2]     //atribuindo novamente o vetor [i + 1] a essa variavel
+            mul $t6, $t4, $s2     //atribuindo a 1 multiplicação a variavel (nao sei se precisava zera-la antes de atribuir outro valor)
+            mul $t7, $t5, $s3     //atribuindo a 2 multiplicação a variavel (nao sei se precisava zera-la antes de atribuir outro valor)
+            add $t1, $t6, $t7     //atribuindo a soma a variavel que antes era usada para armazenar cont + 1 (nao sei se precisava zera-la antes de atribuir outro valor)
+            lw $t8, vet[$t3]      //atribuindo a $t8 o vetor [i+2] (Nao sei se pode)
+            sub $s7, $t8, $t1
+            
+            // ajustar o primeiro peso
+            lw $t4, vet[$s6]     //atribuindo novamente o vetor [i] a essa variavel 
+            mul $t6, $s4, $t4    //atribuindo novamente outro valor a $t6 (nao sei se precisava zera-la)
+            mul $t7, $s7, $t6    //atribuindo novamente outro valor a $t7 (nao sei se precisava zera-la)
+            add $s2, $s2, $t7    
+
+            // ajustar o segundo peso
+            add $t2, $s6, 4   // atribuindo novamente o i+1 a essa veriavel
+            lw $t5, vet[$t2]     //atribuindo novamente o vetor [i] a essa variavel 
+            mul $t6, $s4, $t5    //atribuindo novamente outro valor a $t6 (nao sei se precisava zera-la)
+            mul $t7, $s7, $t6    //atribuindo novamente outro valor a $t7 (nao sei se precisava zera-la)
+            add $s3, $s3, $t7 
+
+            addi $s6, $s6, 12 //i += 3 
+
+        FimFOR:   j For
+
+            add $s6, ($zero), ($zero) //i=0
+            add $t0, ($zero), ($zero) //variavel que vai mudar com o slt
+            muli $t1, $s0, 3
+            addi $t2, $t1, 6
+            lw $t3, vet[$t2]
+
+        for: slt $t0, $s6, $t3
+            beq $t0, ($zero), FimFOR
+            add $t4, $s6, 4     //atribuindo i + 1 a $t2
+            mul $t5, $t4, $s2   //atribuindo outro valor a $t6 (nao sei se precisava zera-la)
+            mul $t6, $t4, $s3   //atribuindo outro valor a $t7 (nao sei se precisava zera-la)
+            add $t7, $t5, $t6   //atribuindo outro valor a $t3, que antes era i+2 (nao sei se precisava zera-la)
+            add $s6, $s6, 4     // i + 1
+        FimFOR: j for
+
+FIM: Jr $ra
