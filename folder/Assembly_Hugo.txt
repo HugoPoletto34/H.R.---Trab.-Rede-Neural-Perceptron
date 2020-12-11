@@ -1,0 +1,73 @@
+.data                    
+
+vet:		                  	
+  		.space 15
+w1: 		.double 0.0
+w2: 		.double 0.8
+
+taxaApre: 	.double 0.05
+
+		.text                    
+		main:
+		addi $s0, $0, 1   # cont = 1;
+		addi $s1, $0, 0   # i = 0;
+		
+		# Criando o Vetor
+		FOR: SLTI $t1, $s1, 15
+		BEQ $t1, $zero, FIM
+		
+		mul $t2, $s1, 4
+		addi $t3, $t2, 0
+		
+		sw $s0, vet($t3)
+
+		addi $t4, $t3, 4
+		
+		sw $s0, vet($t4)
+		
+		lw $s3, vet($t3) 
+		lw $s4, vet($t4)
+		
+		add $s5, $s3, $s4
+
+		addi $t5, $t4, 4
+		
+		sw $s5, vet($t5)
+		
+		addi $s0, $s0, 1
+		addi $s1, $s1, 3
+		j FOR
+		FIM:
+		
+		
+		# processo de treinamento do neurônio
+
+		addi $s1, $0, 0				# i = 0;
+		FORR: SLTI $t1, $s1, 60
+		BEQ $t1, $zero, FIM2
+		# Erro INICIO
+		
+		mul $t2, $s1, 4
+		addi $t3, $t2, 0
+		
+		lw $t2, w1 ($0)
+		lw $t3, vet($t0)
+		
+		mul $t2, $t6, $s2
+		addi $t0, $t0, 1
+		lw $s3, w2 ($0)
+		lw $t6, vet($t0)
+		mul $t3, $t6, $s3
+		add $t4, $t2, $t3
+		addi $t0, $t0, 1
+		lw $t6, vet($t0)
+		sub $t5, $t6, $t4
+		# Erro FIM
+		
+		
+		 
+		j FORR
+		FIM2:
+		
+		jr    $ra
+		
