@@ -1,5 +1,10 @@
 # H.R.---Trab.-Rede-Neural-Perceptron
 
+Dupla: 
+Hugo Poletto Alacoque Gomes
+Rafaella Cristina de Sousa Sacramento
+
+
 Trabalho Prático (40 pontos) – Em dupla
 
   O trabalho consiste em implementar uma rede neural perceptron de um neurônio em assembly utilizando um simulador QtSpim (http://spimsimulator.sourceforge.net/).
