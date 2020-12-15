@@ -1,6 +1,6 @@
 public class Neuronio {
     public static void main(String[] args) {
-        int tam = 50;
+        int tam = 5;
         int vet[] = new int[tam * 3]; // vetor será usada p/ treinar o neurônio
 
         double w1 =  0.0; // peso1 para a entrada
