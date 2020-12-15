@@ -4,8 +4,8 @@ peso1: 		.float 0.0
 peso2: 		.float 0.8
 zero:		.float 0.0
 one:		.float 1.0
-taxaApre: 	.float 0.05
-vet:            .space 60
+taxaApre: 	.float 0.0001
+vet:            .space 600
 
 soma:		.asciiz " + "
 igual:		.asciiz " = "
@@ -21,7 +21,7 @@ pula:		.asciiz "\n"
 		addi $s1, $0, 0   # i = 0;
 		
 		# Criando o Vetor
-		FOR1: SLTI $t1, $s1, 15
+		FOR1: SLTI $t1, $s1, 150
 		BEQ $t1, $zero, FIM1
 		
 		mul $t2, $s1, 4
@@ -53,10 +53,10 @@ pula:		.asciiz "\n"
 		lwc1 $f4, taxaApre 	# taxa de aprendizado
 		
 		
-		# processo de treinamento do neurônio
+		# processo de treinamento do neurÃ´nio
 		lw $t2, zero,($zero)
 		addi $s1, $0, 0				# i = 0;
-		FOR2: SLTI $t1, $s1, 15
+		FOR2: SLTI $t1, $s1, 150
 		BEQ $t1, $zero, FIM2
 		
 		# Erro INICIO
@@ -118,7 +118,7 @@ pula:		.asciiz "\n"
 		
 		add.s $f4, $f0, $f1 			# cont = 1;
 		addi $s1, $0, 0				# i = 0;
-		FOR3: SLTI $t1, $s1, 15
+		FOR3: SLTI $t1, $s1, 130
 		BEQ $t1, $zero, FIM3
 		
 		
@@ -156,10 +156,4 @@ pula:		.asciiz "\n"
 		addi $s1, $s1, 1
 		j FOR3
 		FIM3:
-		
-		
-		
-
-		
-		jr    $ra
-		
+		jr $ra
