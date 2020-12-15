@@ -1,23 +1,19 @@
-.data                    
+		.data                    
 
-vet:		                  	
-  		.space 15
-  		
-w1: 		.float 5.0
-w2: 		.float 2.2
-
+peso1: 		.float 0.0
+peso2: 		.float 0.8
 zero:		.float 0.0
 one:		.float 1.0
-
 taxaApre: 	.float 0.05
-
+vet:            .space 60
+  		
 		.text                    
 		main:
 		
 		lwc1 $f0, zero
 		lwc1 $f1, one
 		
-		add.d $f2, $f0, $f1 # cont = 1;
+		add.s $f2, $f0, $f1 # cont = 1;
 		addi $s1, $0, 0   # i = 0;
 		
 		# Criando o Vetor
@@ -29,7 +25,6 @@ taxaApre: 	.float 0.05
 		
 		swc1 $f2, vet($t3)
 		
-		
 		addi $t4, $t3, 4
 		
 		
@@ -38,20 +33,21 @@ taxaApre: 	.float 0.05
 		lwc1 $f3, vet($t3) 
 		lwc1 $f4, vet($t4)
 		
-		li $v0, 2
-		add.d $f5, $f3, $f4
-		syscall
+		add.s $f5, $f3, $f4
+
 		
 		addi $t5, $t4, 4
 		
 		swc1 $f5, vet($t5)
-		
-		lwc1 $f5, one
-		add.s $f2, $f2, $f5
+
+		add.s $f2, $f2, $f1
 		addi $s1, $s1, 3
 		j FOR
 		FIM:
-		
+
+		lwc1 $f2, peso1 	# peso 1 
+		lwc1 $f3, peso2 	# peso 2
+		lwc1 $f4, taxaApre 	# taxa de aprendizado
 		
 		
 		# processo de treinamento do neurônio
@@ -65,47 +61,38 @@ taxaApre: 	.float 0.05
 		mul $t2, $s1, 4
 		addi $t3, $t2, 0
 		
-		lwc1 $f2, w1 
-		lwc1 $f3, vet($t3)
 		
-		mul.s $f4, $f2, $f3
+		lwc1 $f5, vet($t3)
 		
-		addi $t3, $zero, 4
+		mul.s $f6, $f2, $f5
 		
-		lwc1 $f5, w2
-		lwc1 $f6, vet($t3)
+		addi $t3, $t3, 4
+
+		lwc1 $f7, vet($t3)
 		
-		mul.s $f7, $f5, $f6
+		mul.s $f8, $f3, $f7
 		
-		add.s $f8, $f4, $f7
+		add.s $f9, $f5, $f8
 		
-		addi $t3, $zero, 4
-		lwc1 $f9, vet($t3)
+		addi $t3, $t3, 4
+		lwc1 $f10, vet($t3)
 		
 		li $v0, 2
-		sub.d $f10, $f9, $f8
+		sub.s $f11, $f10, $f8 		# erro
 		syscall
 			
 		# Erro FIM
-		
-		li $v0, 3
-		add.d $f12, $f7, $f1
-		syscall
 
-		
 		# Atualiza peso 1 INICIO
 		
 		mul $t2, $s1, 4
 		addi $t3, $t2, 0
 		
-		lw $t3, vet($t3)
-		lw $t4, taxaApre ($0)
+		lwc1 $f5, vet($t3)
 		
-		mul $t5, $t3, $t4
-		
-		mul $t6, $t7, $t5
-		
-		add $s2, $s2, $t6
+		mul.s $f6, $f5, $f4
+		mul.s $f7, $f11, $f6
+		add.s $f2, $f2, $f7
 		
 		# Atualiza peso 1 FIM
 		
@@ -113,13 +100,11 @@ taxaApre: 	.float 0.05
 		
 		addi $t3, $0, 4
 		
-		lw $t3, vet($t3)
+		lwc1 $f5, vet($t3)
 		
-		mul $t5, $t3, $t4
-		
-		mul $t6, $t7, $t5
-		
-		add $s3, $s3, $t6
+		mul.s $f6, $f5, $f4
+		mul.s $f7, $f11, $f6
+		add.s $f3, $f3, $f7
 		
 		# Atualiza peso 2 FIM
 		

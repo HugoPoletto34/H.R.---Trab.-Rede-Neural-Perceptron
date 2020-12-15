@@ -3,10 +3,10 @@ public class Neuronio {
         int tam = 50;
         int vet[] = new int[tam * 3]; // vetor será usada p/ treinar o neurônio
 
-        double w1 =  5.0; // peso1 para a entrada
+        double w1 =  0.0; // peso1 para a entrada
         double w2 = 0.8; // peso2 para a entrada
 
-        double taxaApre = 0.0001; // taxa de aprendizado do neurônio
+        double taxaApre = 0.05; // taxa de aprendizado do neurônio
 
         // criando o vetor
         int cont = 0;
