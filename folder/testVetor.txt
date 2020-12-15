@@ -1,0 +1,16 @@
+.data                    
+
+vet:		                  	
+  		.space 5
+
+		.text                    
+		main:
+  		addi  $t6, $0, 1	       # carrega 1 para $t6
+  		addi  $t7, $0, 4	       # carrega 4 para $t7
+  		addi  $t8, $0, 8	       # carrega 4 para $t7
+  		sw    $t6, vet($0)    # grava 1 na posicao Array[0]
+  		sw    $t7, vet($t7)   # grava 1 na posicao Array[1]
+  		sw    $t8, vet($t8)   # grava 1 na posicao Array[1]
+		
+		jr    $ra
+		

@@ -15,7 +15,7 @@ main:   addi $v0, $zero, 4
 	sw $s0, $v0
 
 	addi $v0, $zero, 4
-	la $a0, N2
+	la $a0, N2z
 	syscall
 	addi $v0, $zero, 5
 	syscall

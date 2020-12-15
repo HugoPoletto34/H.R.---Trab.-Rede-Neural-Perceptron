@@ -2,14 +2,22 @@
 
 vet:		                  	
   		.space 15
-w1: 		.double 0.0
-w2: 		.double 0.8
+  		
+w1: 		.float 5.0
+w2: 		.float 2.2
 
-taxaApre: 	.double 0.05
+zero:		.float 0.0
+one:		.float 1.0
+
+taxaApre: 	.float 0.05
 
 		.text                    
 		main:
-		addi $s0, $0, 1   # cont = 1;
+		
+		lwc1 $f0, zero
+		lwc1 $f1, one
+		
+		add.d $f2, $f0, $f1 # cont = 1;
 		addi $s1, $0, 0   # i = 0;
 		
 		# Criando o Vetor
@@ -19,55 +27,110 @@ taxaApre: 	.double 0.05
 		mul $t2, $s1, 4
 		addi $t3, $t2, 0
 		
-		sw $s0, vet($t3)
-
+		swc1 $f2, vet($t3)
+		
+		
 		addi $t4, $t3, 4
 		
-		sw $s0, vet($t4)
 		
-		lw $s3, vet($t3) 
-		lw $s4, vet($t4)
+		swc1 $f2, vet($t4)
 		
-		add $s5, $s3, $s4
-
+		lwc1 $f3, vet($t3) 
+		lwc1 $f4, vet($t4)
+		
+		li $v0, 2
+		add.d $f5, $f3, $f4
+		syscall
+		
 		addi $t5, $t4, 4
 		
-		sw $s5, vet($t5)
+		swc1 $f5, vet($t5)
 		
-		addi $s0, $s0, 1
+		lwc1 $f5, one
+		add.s $f2, $f2, $f5
 		addi $s1, $s1, 3
 		j FOR
 		FIM:
 		
 		
+		
 		# processo de treinamento do neurônio
-
+		lw $t2, zero,($zero)
 		addi $s1, $0, 0				# i = 0;
-		FORR: SLTI $t1, $s1, 60
+		FORR: SLTI $t1, $s1, 15
 		BEQ $t1, $zero, FIM2
+		
 		# Erro INICIO
 		
 		mul $t2, $s1, 4
 		addi $t3, $t2, 0
 		
-		lw $t2, w1 ($0)
-		lw $t3, vet($t0)
+		lwc1 $f2, w1 
+		lwc1 $f3, vet($t3)
 		
-		mul $t2, $t6, $s2
-		addi $t0, $t0, 1
-		lw $s3, w2 ($0)
-		lw $t6, vet($t0)
-		mul $t3, $t6, $s3
-		add $t4, $t2, $t3
-		addi $t0, $t0, 1
-		lw $t6, vet($t0)
-		sub $t5, $t6, $t4
+		mul.s $f4, $f2, $f3
+		
+		addi $t3, $zero, 4
+		
+		lwc1 $f5, w2
+		lwc1 $f6, vet($t3)
+		
+		mul.s $f7, $f5, $f6
+		
+		add.s $f8, $f4, $f7
+		
+		addi $t3, $zero, 4
+		lwc1 $f9, vet($t3)
+		
+		li $v0, 2
+		sub.d $f10, $f9, $f8
+		syscall
+			
 		# Erro FIM
 		
+		li $v0, 3
+		add.d $f12, $f7, $f1
+		syscall
+
 		
-		 
+		# Atualiza peso 1 INICIO
+		
+		mul $t2, $s1, 4
+		addi $t3, $t2, 0
+		
+		lw $t3, vet($t3)
+		lw $t4, taxaApre ($0)
+		
+		mul $t5, $t3, $t4
+		
+		mul $t6, $t7, $t5
+		
+		add $s2, $s2, $t6
+		
+		# Atualiza peso 1 FIM
+		
+		# Atualiza peso 2 INICIO
+		
+		addi $t3, $0, 4
+		
+		lw $t3, vet($t3)
+		
+		mul $t5, $t3, $t4
+		
+		mul $t6, $t7, $t5
+		
+		add $s3, $s3, $t6
+		
+		# Atualiza peso 2 FIM
+		
+		addi $s1, $s1, 3
+		
 		j FORR
+				
+
+		
 		FIM2:
+
 		
 		jr    $ra
 		
