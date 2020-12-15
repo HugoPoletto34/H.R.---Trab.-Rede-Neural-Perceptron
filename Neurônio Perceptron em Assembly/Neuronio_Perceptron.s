@@ -1,10 +1,11 @@
 		.data                    
 
-peso1: 		.float 0.0
-peso2: 		.float 0.8
+peso1: 		.float 1.3
+peso2: 		.float 2.2
 zero:		.float 0.0
 one:		.float 1.0
-taxaApre: 	.float 0.0001
+three:		.float 3.0
+taxaApre: 	.float 0.0005
 vet:            .space 600
 
 soma:		.asciiz " + "
@@ -16,22 +17,23 @@ pula:		.asciiz "\n"
 		
 		lwc1 $f0, zero
 		lwc1 $f1, one
+		lwc1 $f12, three
 
-		add.s $f2, $f0, $f1 # cont = 1;
-		addi $s1, $0, 0   # i = 0;
+		add.s $f2, $f0, $f1 		# cont = 1;
+		addi $s1, $0, 0  		# i = 0;
 		
-		# Criando o Vetor
+		# Criando o Vetor de entradas
 		FOR1: SLTI $t1, $s1, 150
 		BEQ $t1, $zero, FIM1
 		
 		mul $t2, $s1, 4
 		addi $t3, $t2, 0
 		
-		swc1 $f2, vet($t3)
+		swc1 $f12, vet($t3)
 		
 		addi $t4, $t3, 4
 		
-		swc1 $f2, vet($t4)
+		swc1 $f12, vet($t4)
 		
 		lwc1 $f3, vet($t3) 
 		lwc1 $f4, vet($t4)
@@ -43,19 +45,19 @@ pula:		.asciiz "\n"
 		
 		swc1 $f5, vet($t5)
 
-		add.s $f2, $f2, $f1
+		add.s $f12, $f12, $f1
 		addi $s1, $s1, 3
 		j FOR1
 		FIM1:
 
-		lwc1 $f2, peso1 	# peso 1 
-		lwc1 $f3, peso2 	# peso 2
-		lwc1 $f4, taxaApre 	# taxa de aprendizado
+		lwc1 $f2, peso1 		# peso 1 
+		lwc1 $f3, peso2 		# peso 2
+		lwc1 $f4, taxaApre 		# taxa de aprendizado
 		
 		
-		# processo de treinamento do neurÃ´nio
+		# processo de treinamento do neurônio
 		lw $t2, zero,($zero)
-		addi $s1, $0, 0				# i = 0;
+		addi $s1, $0, 0			# i = 0;
 		FOR2: SLTI $t1, $s1, 150
 		BEQ $t1, $zero, FIM2
 		
@@ -116,9 +118,10 @@ pula:		.asciiz "\n"
 		j FOR2
 		FIM2:
 		
-		add.s $f4, $f0, $f1 			# cont = 1;
-		addi $s1, $0, 0				# i = 0;
-		FOR3: SLTI $t1, $s1, 130
+		# Impressão - testando o neurônio 
+		add.s $f4, $f0, $f1 		# cont = 1;
+		addi $s1, $0, 0			# i = 0;
+		FOR3: SLTI $t1, $s1, 100
 		BEQ $t1, $zero, FIM3
 		
 		
