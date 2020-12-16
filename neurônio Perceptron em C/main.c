@@ -7,22 +7,22 @@ int main()
 
     float dadoA = 0, dadoB = dadoA;
     float valorA, valorB;
-    float pesoA = 0, pesoB = 0.8;
+    float pesoA = 1.3, pesoB = 2.2;
     float multA, multB;
-    float taxaDeAprendizado = 0.05;
+    float taxaDeAprendizado = 0.0005;
     float saidaDesejada;
     float saidaNeuronio;
     float erro;
-    int etapa = 1;
+    int etapa = 5;
 
     for (int i = 0; i < etapa; i++)
     {
-        printf("\n %i ° Etapa:\n", etapa);
+        printf("\n %i Â° Etapa:\n", etapa);
         for(int j = 0; j < 5; j++)
         {
 
-        dadoA = dadoA + 1;
-        dadoB = dadoB + 1;
+        dadoA = dadoA + 3;
+        dadoB = dadoB + 3;
         saidaDesejada = dadoA + dadoB;
         valorA = dadoA * pesoA;
         valorB = dadoB * pesoB;
